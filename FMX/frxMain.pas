@@ -1,5 +1,5 @@
-unit frxMain;
-// � drSturman, 2022
+﻿unit frxMain;
+// © drSturman, 2022
 // https://github.com/drSturman
 
 interface

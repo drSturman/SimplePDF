@@ -1,5 +1,5 @@
-unit unFMXPDF;
-// � drSturman, 2022
+﻿unit unFMXPDF;
+// © drSturman, 2022
 // https://github.com/drSturman
 
 interface
