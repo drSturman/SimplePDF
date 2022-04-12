@@ -34,8 +34,6 @@ object Form1: TForm1
     Margins.Top = 40
     Align = alRight
     TabOrder = 0
-    ExplicitLeft = 718
-    ExplicitHeight = 452
   end
   object btOpenImage: TButton
     Left = 8
@@ -118,10 +116,6 @@ object Form1: TForm1
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 8
-    ExplicitLeft = 232
-    ExplicitTop = 264
-    ExplicitWidth = 337
-    ExplicitHeight = 169
     object Image1: TImage
       Left = 0
       Top = 0

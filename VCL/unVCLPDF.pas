@@ -29,8 +29,8 @@ type
     procedure AddImagePosition(X, Y, Width, Heigt: double);
     procedure SaveImagePositions;
     procedure SaveImage(Grp: VCL.Graphics.TGraphic; ImgId: integer);
-    procedure AddBitmapPage(Grp: VCL.Graphics.TGraphic; dpi: integer);
-    procedure SaveClose(const FName: string);
+    procedure AddBitmapPage(Grp: VCL.Graphics.TGraphic; DPI: integer);
+    procedure SaveClose(const FileName: string);
   end;
 
 const
@@ -161,13 +161,12 @@ begin
   FDirects.Add(FPDFStream.Position);
 end;
 
-procedure TSimplePDF.AddBitmapPage(Grp: TGraphic; dpi: integer);
+procedure TSimplePDF.AddBitmapPage(Grp: TGraphic; DPI: integer);
 var
   PageW, PageH: double;
 begin
-  PageW := Grp.Width * 72 / dpi;
-  PageH := Grp.Height * 72 / dpi;
-
+  PageW := Grp.Width * 72 / DPI;
+  PageH := Grp.Height * 72 / DPI;
   AddPage(PageW, PageH, 1);
   AddImagePosition(0, 0, PageW, PageH);
   SaveImagePositions;
@@ -198,10 +197,10 @@ begin
   inherited;
 end;
 
-procedure TSimplePDF.SaveClose(const FName: string);
+procedure TSimplePDF.SaveClose(const FileName: string);
 var
   i: integer;
-  startxref, L: integer;
+  StartXref, L: integer;
   s: AnsiString;
 begin
   // Page objects list generate
@@ -219,7 +218,7 @@ begin
   FDirects.Add(FPDFStream.Position);
 
   // Direct links table generate
-  startxref := FPDFStream.Position;
+  StartXref := FPDFStream.Position;
   s := 'xref' + #10 + '0 ' + (FDirects.Count + 1).ToString() + '' + #10 +
     '0000000000 65535 f' + #10;
   FPDFStream.Write(s[1], Length(s));
@@ -231,10 +230,10 @@ begin
 
   s := 'trailer' + #10 + '<<' + #10 + '  /Size ' + (FDirects.Count + 1).ToString
     + #10 + '  /Root 1 0 R' + #10 + '>>' + #10 + 'startxref' + #10 +
-    startxref.ToString + #10 + '%%EOF';
+    StartXref.ToString + #10 + '%%EOF';
   FPDFStream.Write(s[1], Length(s));
 
-  FPDFStream.SaveToFile(FName);
+  FPDFStream.SaveToFile(FileName);
 end;
 
 initialization
