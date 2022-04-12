@@ -1,4 +1,6 @@
 unit unVCLPDF;
+// © drSturman, 2022
+// https://github.com/drSturman
 
 interface
 
