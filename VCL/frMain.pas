@@ -1,4 +1,6 @@
 unit frMain;
+// © drSturman, 2022
+// https://github.com/drSturman
 
 interface
 
