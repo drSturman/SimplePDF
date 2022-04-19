@@ -23951,7 +23951,7 @@ object frmMain: TfrmMain
   end
   object chbOpenAfterSaving: TCheckBox
     IsChecked = True
-    Position.X = 728.000000000000000000
+    Position.X = 730.000000000000000000
     Position.Y = 33.000000000000000000
     TabOrder = 19
     Text = 'Open after Saving'

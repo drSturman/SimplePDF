@@ -4652,7 +4652,7 @@ object frmMain: TfrmMain
     TabOrder = 9
   end
   object chbOpenAfterSaving: TCheckBox
-    Left = 782
+    Left = 783
     Top = 36
     Width = 114
     Height = 17

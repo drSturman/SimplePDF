@@ -1,6 +1,7 @@
 ﻿unit unFMXPDF;
 // Copyright (c) 2022 Andrei Dergachev
 // https://github.com/drSturman
+// TSimplePDF v.0.6
 
 interface
 

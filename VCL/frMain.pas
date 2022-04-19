@@ -1,5 +1,5 @@
 ﻿unit frMain;
-// Sample for using TSimplePDF
+// Sample for using TSimplePDF v.0.6
 // https://github.com/drSturman
 
 interface
