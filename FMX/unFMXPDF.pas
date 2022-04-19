@@ -6,7 +6,7 @@ interface
 
 uses
   System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants, FMX.Surfaces,
-  FMX.Types, FMX.Graphics, FMX.Objects, System.Generics.Collections;
+  FMX.Types, FMX.Graphics, FMX.Objects, System.Generics.Collections, StrUtils;
 
 type
 
@@ -75,8 +75,9 @@ var
 begin
   FImgPositions.Clear;
   FImgNames.Clear;
-  FPageObjects.Add(FDirects.Count + cParamCount);
 
+  FDirects.Add(FPDFStream.Position);
+  FPageObjects.Add(FDirects.Count + cParamCount);
   s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /Page' + #10 + '/Parent 2 0 R' +
     #10 + '/MediaBox [0 0 ' + FloatToStrF(AWidth, ffFixed, 5, 3) + ' ' + FloatToStrF(AHeigt, ffFixed, 5, 3) + ']' + #10;
 
@@ -95,7 +96,6 @@ begin
   end;
   s := s + '>>' + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
-  FDirects.Add(FPDFStream.Position);
 end;
 
 function GetImageSize(const AFileName: string; out AWidth, AHeight: integer; out ABitmap: FMX.Graphics.TBitmap)
@@ -104,13 +104,10 @@ begin
   Result := false;
   ABitmap := FMX.Graphics.TBitmap.Create;
   try
-    if SameText(TImageTypeChecker.GetType(AFileName), '.jpg') then
-    begin
-      ABitmap.LoadFromFile(AFileName);
-      AWidth := ABitmap.Width;
-      AHeight := ABitmap.Height;
-      Result := (AWidth > 0) and (AHeight > 0);
-    end;
+    ABitmap.LoadFromFile(AFileName);
+    AWidth := ABitmap.Width;
+    AHeight := ABitmap.Height;
+    Result := (AWidth > 0) and (AHeight > 0);
   except
     ABitmap.Free;
   end;
@@ -137,7 +134,8 @@ begin
     if AFilter > '' then
       AFilter := '/Filter /' + AFilter + #10;
 
-    // Image description
+    // Image properties
+    FDirects.Add(FPDFStream.Position);
     s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 +
       '/Subtype /Image' + #10 + '/Name /' + FImgNames[AImageIndex] + #10 + '/Width ' + AWidth.ToString + ' /Height ' +
       AHeight.ToString + ' /Length ' + (FDirects.Count + 1 + cParamCount).ToString + ' 0 R' + #10 + '/Filter /DCTDecode'
@@ -155,56 +153,11 @@ begin
   FPDFStream.Write(s[1], Length(s));
 
   FDirects.Add(FPDFStream.Position);
-
   // Image size
   s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + LImageSize.ToString + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
-  FDirects.Add(FPDFStream.Position);
 end;
 
-(*
-  procedure TSimplePDF.SaveImage(Bmp: FMX.Graphics.TBitmap; ImgId: integer);
-  var
-  sz: integer;
-  aSurf: TBitmapSurface;
-  sp: TBitmapCodecSaveParams;
-  s: AnsiString;
-  begin
-  if ImgId>= FImgNames.Count then exit;
-  inc(FImageCount);
-
-  //Image description
-  s := (FDirects.Count + cParamCount).ToString +
-  ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 + '/Subtype /Image' +
-  #10 + '/Name /' + FImgNames[ImgId] + #10 + '/Width ' + Bmp.Width.ToString + '/Height ' +
-  Bmp.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString +
-  ' 0 R' + #10 + '/Filter /DCTDecode' + #10 + '/ColorSpace /DeviceRGB' + #10 +
-  '/BitsPerComponent 8' + #10 + '>>' + #10 + 'stream' + #10;
-  FPDFStream.Write(s[1], Length(s));
-
-  sz := FPDFStream.Position;
-
-  //Image body
-  aSurf := TBitmapSurface.Create;
-  aSurf.Assign(Bmp);
-  sp.Quality := 90; //100 - maximum quality, but big size
-  TBitmapCodecManager.SaveToStream(FPDFStream, aSurf, '.jpg', @sp);
-  aSurf.Free;
-
-  sz := FPDFStream.Position - sz;
-
-  s := #10 + 'endstream' + #10 + 'endobj' + #10;
-  FPDFStream.Write(s[1], Length(s));
-
-  FDirects.Add(FPDFStream.Position);
-
-  //Image size
-  s := (FDirects.Count + cParamCount).ToString +
-  ' 0 obj' + #10 + sz.ToString + #10 + 'endobj' + #10;
-  FPDFStream.Write(s[1], Length(s));
-  FDirects.Add(FPDFStream.Position);
-  end;
-*)
 function TSimplePDF.SaveImageAsJpeg(ABitmap: FMX.Graphics.TBitmap; AImageIndex: integer; AJpegQuality: integer)
   : boolean;
 var
@@ -219,7 +172,8 @@ begin
 
   inc(FImageCount);
 
-  // Image description
+  // Image properties
+  FDirects.Add(FPDFStream.Position);
   s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 +
     '/Subtype /Image' + #10 + '/Name /' + FImgNames[AImageIndex] + #10 + '/Width ' + ABitmap.Width.ToString + '/Height '
     + ABitmap.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString + ' 0 R' + #10 +
@@ -236,7 +190,7 @@ begin
     LImageSize := FPDFStream.Position;
     TBitmapCodecManager.SaveToStream(FPDFStream, LBitmapSurface, '.jpg', @LCodecParams);
     LImageSize := FPDFStream.Position - LImageSize;
-
+    Result := true;
   finally
     LBitmapSurface.Free;
   end;
@@ -244,12 +198,10 @@ begin
   s := #10 + 'endstream' + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
 
-  FDirects.Add(FPDFStream.Position);
-
   // Image size
+  FDirects.Add(FPDFStream.Position);
   s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + LImageSize.ToString + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
-  FDirects.Add(FPDFStream.Position);
 end;
 
 procedure TSimplePDF.SaveImagePositions;
@@ -262,10 +214,10 @@ begin
       FloatToStrF(FImgPositions[i].Heigt, ffFixed, 5, 3) + ' ' + FloatToStrF(FImgPositions[i].X, ffFixed, 5, 3) + ' ' +
       FloatToStrF(FImgPositions[i].Y, ffFixed, 5, 3) + ' cm' + #10 + '/' + FImgNames[i] + ' Do' + #10 + 'Q' + #10;
 
+  FDirects.Add(FPDFStream.Position);
   s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<</Length ' + Length(LImgS).ToString + #10 + '>>' +
     #10 + 'stream' + #10 + LImgS + 'endstream' + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
-  FDirects.Add(FPDFStream.Position);
 end;
 
 function TSimplePDF.AddImagePage(const AFileName: string; ADPI: integer): boolean;
@@ -310,7 +262,6 @@ begin
   FImageCount := 0;
   s := '%PDF-1.2' + #10;
   FPDFStream.Write(s[1], Length(s));
-  FDirects.Add(FPDFStream.Position);
 end;
 
 destructor TSimplePDF.Destroy;
@@ -327,16 +278,16 @@ var
   LStartXref: integer;
   s: AnsiString;
 begin
-  // Page objects list generate
-  FDirects.Move(FDirects.Count - 1, 0); // Move first object link to top of list
+  if FPageObjects.Count = 0 then
+    AddPage(cPageWidthA4, cPageHeightA4, 0);
 
+  // Page objects list generate
+  FDirects.Insert(0, FPDFStream.Position); // insert link to first object
   s := '1 0 obj' + #10 + '<<' + #10 + '/Type /Catalog' + #10 + '/Pages ' + '2 0 R>>' + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
 
   FDirects.Insert(1, FPDFStream.Position); // insert link to second object
-  FDirects.Add(FPDFStream.Position);
-  s := '2 0 obj' + #10 + '<<' + #10 + '/Type /Pages' + #10 + '/Count ' + FPageObjects.Count.ToString + #10 +
-    '/Kids [ ';
+  s := '2 0 obj' + #10 + '<<' + #10 + '/Type /Pages' + #10 + '/Count ' + FPageObjects.Count.ToString + #10 + '/Kids [ ';
 
   for var i: integer := 0 to FPageObjects.Count - 1 do
     s := s + FPageObjects[i].ToString + ' 0 R' + #10;

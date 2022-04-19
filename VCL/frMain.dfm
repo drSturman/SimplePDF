@@ -13,7 +13,7 @@ object frmMain: TfrmMain
   TextHeight = 15
   object Splitter1: TSplitter
     AlignWithMargins = True
-    Left = 729
+    Left = 671
     Top = 54
     Width = 5
     Height = 526
@@ -28,14 +28,15 @@ object frmMain: TfrmMain
   end
   object Memo1: TMemo
     AlignWithMargins = True
-    Left = 734
+    Left = 676
     Top = 54
-    Width = 268
+    Width = 326
     Height = 523
     Margins.Left = 0
     Margins.Top = 54
     Align = alRight
     TabOrder = 0
+    ExplicitLeft = 677
   end
   object btOpenImage: TButton
     Left = 8
@@ -108,7 +109,7 @@ object frmMain: TfrmMain
     AlignWithMargins = True
     Left = 3
     Top = 54
-    Width = 726
+    Width = 668
     Height = 523
     Margins.Top = 54
     Margins.Right = 0
@@ -118,10 +119,11 @@ object frmMain: TfrmMain
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 8
+    ExplicitWidth = 726
     object Image1: TImage
       Left = 0
       Top = 0
-      Width = 722
+      Width = 664
       Height = 519
       Margins.Top = 40
       Align = alClient

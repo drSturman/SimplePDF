@@ -113,6 +113,7 @@ begin
       Memo1.Lines.Add('Image page added from ' + ExtractFileName(OpenDialog1.Files[i]));
 
   FSimplePDF.SaveEndOfPDF(chbSaveRefTable.IsChecked);
+  Memo1.Lines.Add('PDF saved and closed');
 
   FreeAndNil(FSimplePDF);
   FreeAndNil(FStream);
