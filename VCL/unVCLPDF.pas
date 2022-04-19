@@ -214,7 +214,7 @@ begin
 
     inc(FImageCount);
 
-    // Image description
+    // Image properties
     s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 +
       '/Subtype /Image' + #10 + '/Name /' + FImgNames[AImageIndex] + #10 + '/Width ' + AGraphic.Width.ToString +
       '/Height ' + AGraphic.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString + ' 0 R' + #10 +
