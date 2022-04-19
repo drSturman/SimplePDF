@@ -36,7 +36,6 @@ object frmMain: TfrmMain
     Margins.Top = 54
     Align = alRight
     TabOrder = 0
-    ExplicitLeft = 677
   end
   object btOpenImage: TButton
     Left = 8
@@ -119,7 +118,6 @@ object frmMain: TfrmMain
     Caption = 'Panel1'
     ShowCaption = False
     TabOrder = 8
-    ExplicitWidth = 726
     object Image1: TImage
       Left = 0
       Top = 0
@@ -4652,7 +4650,7 @@ object frmMain: TfrmMain
     TabOrder = 9
   end
   object chbOpenAfterSaving: TCheckBox
-    Left = 783
+    Left = 784
     Top = 36
     Width = 114
     Height = 17
