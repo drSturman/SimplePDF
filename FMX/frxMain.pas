@@ -1,11 +1,11 @@
 ﻿unit frxMain;
-// © drSturman, 2022
+// Sample for using TSimplePDF
 // https://github.com/drSturman
 
 interface
 
 uses
-  System.SysUtils, System.Types, System.UITypes, System.Classes,  System.Variants,
+  System.SysUtils, System.Types, System.UITypes, System.Classes, System.Variants,
   FMX.Types, FMX.Controls, FMX.Forms, FMX.Graphics, FMX.Dialogs, FMX.Objects,
   FMX.Controls.Presentation, FMX.StdCtrls,
   unFMXPDF, FMX.Memo.Types, FMX.ScrollBox, FMX.Memo, FMX.Edit, FMX.EditBox,
@@ -109,8 +109,8 @@ begin
   Memo1.Lines.Clear;
   Memo1.Lines.Add('New PDF created');
   for i := 0 to OpenDialog1.Files.Count - 1 do
-      if FSimplePDF.AddImagePage(OpenDialog1.Files[i], 150) then
-        Memo1.Lines.Add('Image page added from ' + ExtractFileName(OpenDialog1.Files[i]));
+    if FSimplePDF.AddImagePage(OpenDialog1.Files[i], 150) then
+      Memo1.Lines.Add('Image page added from ' + ExtractFileName(OpenDialog1.Files[i]));
 
   FSimplePDF.SaveEndOfPDF(chbSaveRefTable.IsChecked);
 
@@ -140,8 +140,7 @@ begin
     btSavePDF.Enabled := true;
     if n = 0 then
       exit;
-    if cPageWidthA4 / Image1.Bitmap.Width < cPageHeightA4 / Image1.Bitmap.Height
-    then
+    if cPageWidthA4 / Image1.Bitmap.Width < cPageHeightA4 / Image1.Bitmap.Height then
       Scale := cPageWidthA4 / Image1.Bitmap.Width / 2
     else
       Scale := cPageHeightA4 / Image1.Bitmap.Height / 2;
@@ -154,8 +153,7 @@ begin
       X := 10 + i * SX;
       Y := cPageHeightA4 - H - (10 + i * SY);
       FSimplePDF.AddImagePosition(X, Y, W, H);
-      Memo1.Lines.Add('  Image added at ' + FloatToStrF(X, ffFixed, 3, 1) + ', '
-        + FloatToStrF(Y, ffFixed, 3, 1));
+      Memo1.Lines.Add('  Image added at ' + FloatToStrF(X, ffFixed, 3, 1) + ', ' + FloatToStrF(Y, ffFixed, 3, 1));
     end;
     FSimplePDF.SaveImagePositions;
     for i := 0 to n - 1 do

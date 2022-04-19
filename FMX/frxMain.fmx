@@ -23941,7 +23941,7 @@ object Form1: TForm1
   end
   object chbSaveRefTable: TCheckBox
     IsChecked = True
-    Position.X = 525.000000000000000000
+    Position.X = 523.000000000000000000
     Position.Y = 33.000000000000000000
     Size.Width = 175.000000000000000000
     Size.Height = 19.000000000000000000

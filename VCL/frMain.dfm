@@ -4650,7 +4650,7 @@ object Form1: TForm1
     TabOrder = 9
   end
   object chbOpenAfterSaving: TCheckBox
-    Left = 779
+    Left = 781
     Top = 36
     Width = 114
     Height = 17

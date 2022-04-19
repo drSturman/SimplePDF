@@ -117,7 +117,7 @@ begin
     exit;
 
   LStream := TMemoryStream.Create;
-  // Make Image body
+  // Make image body
   try
     LStream.LoadFromFile(AFileName);
 

@@ -1,5 +1,5 @@
 ﻿unit frMain;
-// © drSturman, 2022
+// Sample for using TSimplePDF
 // https://github.com/drSturman
 
 interface
@@ -132,8 +132,8 @@ begin
   Memo1.Lines.Clear;
   Memo1.Lines.Add('New PDF created');
   for i := 0 to OpenDialog1.Files.Count - 1 do
-      if FSimplePDF.AddImagePage(OpenDialog1.Files[i], 150) then
-        Memo1.Lines.Add('Image page added from ' + ExtractFileName(OpenDialog1.Files[i]));
+    if FSimplePDF.AddImagePage(OpenDialog1.Files[i], 150) then
+      Memo1.Lines.Add('Image page added from ' + ExtractFileName(OpenDialog1.Files[i]));
 
   FSimplePDF.SaveEndOfPDF(chbSaveRefTable.Checked);
 

@@ -98,15 +98,15 @@ begin
   FDirects.Add(FPDFStream.Position);
 end;
 
-function GetImageSize(const AFileName: string; out AWidth, AHeight: integer;
-  out ABitmap: FMX.Graphics.TBitmap): boolean;
+function GetImageSize(const AFileName: string; out AWidth, AHeight: integer; out ABitmap: FMX.Graphics.TBitmap)
+  : boolean;
 begin
   Result := false;
   ABitmap := FMX.Graphics.TBitmap.Create;
   try
-    if SameText(TImageTypeChecker.GetType(AFileName),'.jpg') then
+    if SameText(TImageTypeChecker.GetType(AFileName), '.jpg') then
     begin
-    ABitmap.LoadFromFile(AFileName);
+      ABitmap.LoadFromFile(AFileName);
       AWidth := ABitmap.Width;
       AHeight := ABitmap.Height;
       Result := (AWidth > 0) and (AHeight > 0);
@@ -163,23 +163,23 @@ begin
 end;
 
 (*
-procedure TSimplePDF.SaveImage(Bmp: FMX.Graphics.TBitmap; ImgId: integer);
-var
+  procedure TSimplePDF.SaveImage(Bmp: FMX.Graphics.TBitmap; ImgId: integer);
+  var
   sz: integer;
   aSurf: TBitmapSurface;
   sp: TBitmapCodecSaveParams;
   s: AnsiString;
-begin
+  begin
   if ImgId>= FImgNames.Count then exit;
   inc(FImageCount);
 
   //Image description
   s := (FDirects.Count + cParamCount).ToString +
-    ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 + '/Subtype /Image' +
-    #10 + '/Name /' + FImgNames[ImgId] + #10 + '/Width ' + Bmp.Width.ToString + '/Height ' +
-    Bmp.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString +
-    ' 0 R' + #10 + '/Filter /DCTDecode' + #10 + '/ColorSpace /DeviceRGB' + #10 +
-    '/BitsPerComponent 8' + #10 + '>>' + #10 + 'stream' + #10;
+  ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 + '/Subtype /Image' +
+  #10 + '/Name /' + FImgNames[ImgId] + #10 + '/Width ' + Bmp.Width.ToString + '/Height ' +
+  Bmp.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString +
+  ' 0 R' + #10 + '/Filter /DCTDecode' + #10 + '/ColorSpace /DeviceRGB' + #10 +
+  '/BitsPerComponent 8' + #10 + '>>' + #10 + 'stream' + #10;
   FPDFStream.Write(s[1], Length(s));
 
   sz := FPDFStream.Position;
@@ -200,12 +200,13 @@ begin
 
   //Image size
   s := (FDirects.Count + cParamCount).ToString +
-    ' 0 obj' + #10 + sz.ToString + #10 + 'endobj' + #10;
+  ' 0 obj' + #10 + sz.ToString + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
   FDirects.Add(FPDFStream.Position);
-end;
+  end;
 *)
-function TSimplePDF.SaveImageAsJpeg(ABitmap: FMX.Graphics.TBitmap; AImageIndex: integer; AJpegQuality: integer): boolean;
+function TSimplePDF.SaveImageAsJpeg(ABitmap: FMX.Graphics.TBitmap; AImageIndex: integer; AJpegQuality: integer)
+  : boolean;
 var
   LImageSize: integer;
   LBitmapSurface: TBitmapSurface;
@@ -216,26 +217,24 @@ begin
   if AImageIndex >= FImgNames.Count then
     exit;
 
+  inc(FImageCount);
 
-    inc(FImageCount);
-
-    // Image description
-    s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 +
-      '/Subtype /Image' + #10 + '/Name /' + FImgNames[AImageIndex] + #10 + '/Width ' + ABitmap.Width.ToString +
-      '/Height ' + ABitmap.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString + ' 0 R' + #10 +
-      '/Filter /DCTDecode' + #10 + '/ColorSpace /DeviceRGB' + #10 + '/BitsPerComponent 8' + #10 + '>>' + #10 +
-      'stream' + #10;
-    FPDFStream.Write(s[1], Length(s));
+  // Image description
+  s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 +
+    '/Subtype /Image' + #10 + '/Name /' + FImgNames[AImageIndex] + #10 + '/Width ' + ABitmap.Width.ToString + '/Height '
+    + ABitmap.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString + ' 0 R' + #10 +
+    '/Filter /DCTDecode' + #10 + '/ColorSpace /DeviceRGB' + #10 + '/BitsPerComponent 8' + #10 + '>>' + #10 +
+    'stream' + #10;
+  FPDFStream.Write(s[1], Length(s));
 
   // Make Image body
   LBitmapSurface := TBitmapSurface.Create;
- try
-  LBitmapSurface.Assign(ABitmap);
-  LCodecParams.Quality := 90; //100 - maximum quality, but big size
-
+  try
+    LBitmapSurface.Assign(ABitmap);
+    LCodecParams.Quality := 90; // 100 - maximum quality, but big size
 
     LImageSize := FPDFStream.Position;
-  TBitmapCodecManager.SaveToStream(FPDFStream, LBitmapSurface, '.jpg', @LCodecParams);
+    TBitmapCodecManager.SaveToStream(FPDFStream, LBitmapSurface, '.jpg', @LCodecParams);
     LImageSize := FPDFStream.Position - LImageSize;
 
   finally
@@ -289,7 +288,7 @@ begin
     AddImagePosition(0, 0, LPageWidth, LPageHeight);
     SaveImagePositions;
 
-    if SameText(TImageTypeChecker.GetType(AFileName),'.jpg') then
+    if SameText(TImageTypeChecker.GetType(AFileName), '.jpg') then
       Result := SaveJpegImageAsIs(AFileName, 0, LImageWidth, LImageHeight)
     else
       Result := SaveImageAsJpeg(LBitmap, 0, 85);
