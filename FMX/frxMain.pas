@@ -12,7 +12,7 @@ uses
   FMX.SpinBox {$IFDEF MSWINDOWS}, ShellAPI, Winapi.Windows{$ENDIF};
 
 type
-  TForm1 = class(TForm)
+  TfrmMain = class(TForm)
     btPageFromImage: TButton;
     btSavePDF: TButton;
     OpenDialog1: TOpenDialog;
@@ -43,13 +43,13 @@ type
   end;
 
 var
-  Form1: TForm1;
+  frmMain: TfrmMain;
 
 implementation
 
 {$R *.fmx}
 
-procedure TForm1.btSavePDFClick(Sender: TObject);
+procedure TfrmMain.btSavePDFClick(Sender: TObject);
 begin
   if not(FStream is TMemoryStream) then
     exit;
@@ -72,14 +72,14 @@ begin
 {$ENDIF}
 end;
 
-procedure TForm1.btOpenImageClick(Sender: TObject);
+procedure TfrmMain.btOpenImageClick(Sender: TObject);
 begin
   if not OpenDialog1.Execute then
     exit;
   Image1.Bitmap.LoadFromFile(OpenDialog1.FileName)
 end;
 
-procedure TForm1.btPageFromImageClick(Sender: TObject);
+procedure TfrmMain.btPageFromImageClick(Sender: TObject);
 begin
   if Assigned(FSimplePDF) then
   begin
@@ -89,7 +89,7 @@ begin
   end;
 end;
 
-procedure TForm1.btPDFFromImagesClick(Sender: TObject);
+procedure TfrmMain.btPDFFromImagesClick(Sender: TObject);
 var
   i: integer;
   Bmp: FMX.Graphics.TBitmap;
@@ -127,7 +127,7 @@ begin
 {$ENDIF}
 end;
 
-procedure TForm1.btAddPageClick(Sender: TObject);
+procedure TfrmMain.btAddPageClick(Sender: TObject);
 var
   i, n: integer;
   Scale, W, H, X, Y, SX, SY: double;
@@ -161,7 +161,7 @@ begin
   end;
 end;
 
-procedure TForm1.btNewPDFClick(Sender: TObject);
+procedure TfrmMain.btNewPDFClick(Sender: TObject);
 begin
   if Assigned(FSimplePDF) then
     FreeAndNil(FSimplePDF);

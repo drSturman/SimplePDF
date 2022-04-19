@@ -336,7 +336,7 @@ begin
   FDirects.Insert(1, FPDFStream.Position); // insert link to second object
   FDirects.Add(FPDFStream.Position);
   s := '2 0 obj' + #10 + '<<' + #10 + '/Type /Pages' + #10 + '/Count ' + FPageObjects.Count.ToString + #10 +
-    '/Kids [' + #10;
+    '/Kids [ ';
 
   for var i: integer := 0 to FPageObjects.Count - 1 do
     s := s + FPageObjects[i].ToString + ' 0 R' + #10;

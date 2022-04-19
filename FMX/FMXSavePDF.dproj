@@ -249,7 +249,7 @@
             <MainSource>MainSource</MainSource>
         </DelphiCompile>
         <DCCReference Include="frxMain.pas">
-            <Form>Form1</Form>
+            <Form>frmMain</Form>
             <FormType>fmx</FormType>
         </DCCReference>
         <DCCReference Include="unFMXPDF.pas"/>

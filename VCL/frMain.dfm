@@ -1,4 +1,4 @@
-object Form1: TForm1
+object frmMain: TfrmMain
   Left = 0
   Top = 0
   Caption = 'Simple PDF VCL'
@@ -4650,7 +4650,7 @@ object Form1: TForm1
     TabOrder = 9
   end
   object chbOpenAfterSaving: TCheckBox
-    Left = 781
+    Left = 782
     Top = 36
     Width = 114
     Height = 17

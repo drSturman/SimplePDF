@@ -217,7 +217,7 @@ begin
     // Image properties
     s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 +
       '/Subtype /Image' + #10 + '/Name /' + FImgNames[AImageIndex] + #10 + '/Width ' + AGraphic.Width.ToString +
-      '/Height ' + AGraphic.Height.ToString + '/Length ' + (FDirects.Count + 1 + cParamCount).ToString + ' 0 R' + #10 +
+      ' /Height ' + AGraphic.Height.ToString + ' /Length ' + (FDirects.Count + 1 + cParamCount).ToString + ' 0 R' + #10 +
       '/Filter /DCTDecode' + #10 + '/ColorSpace /DeviceRGB' + #10 + '/BitsPerComponent 8' + #10 + '>>' + #10 +
       'stream' + #10;
     FPDFStream.Write(s[1], Length(s));

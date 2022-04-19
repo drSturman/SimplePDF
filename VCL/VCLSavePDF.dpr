@@ -2,7 +2,7 @@ program VCLSavePDF;
 
 uses
   Vcl.Forms,
-  frMain in 'frMain.pas' {Form1},
+  frMain in 'frMain.pas' {frmMain},
   unVCLPDF in 'unVCLPDF.pas';
 
 {$R *.res}
@@ -10,6 +10,6 @@ uses
 begin
   Application.Initialize;
   Application.MainFormOnTaskbar := True;
-  Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TfrmMain, frmMain);
   Application.Run;
 end.
