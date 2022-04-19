@@ -119,23 +119,19 @@ var
   LImageSize: integer;
   LStream: TMemoryStream;
   s: AnsiString;
-  AFilter: AnsiString;
 begin
   Result := false;
   if AImageIndex >= FImgNames.Count then
     exit;
 
+  // Make image body
   LStream := TMemoryStream.Create;
-  // Make Image body
   try
     LStream.LoadFromFile(AFileName);
 
     inc(FImageCount);
 
-    if AFilter > '' then
-      AFilter := '/Filter /' + AFilter + #10;
-
-    // Image properties
+    // Save image properties
     FDirects.Add(FPDFStream.Position);
     s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + '<<' + #10 + '/Type /XObject' + #10 +
       '/Subtype /Image' + #10 + '/Name /' + FImgNames[AImageIndex] + #10 + '/Width ' + AWidth.ToString + ' /Height ' +
@@ -143,6 +139,7 @@ begin
       + #10 + '/ColorSpace /DeviceRGB' + #10 + '/BitsPerComponent 8' + #10 + '>>' + #10 + 'stream' + #10;
     FPDFStream.Write(s[1], Length(s));
 
+    // Save image and calculating image size
     LImageSize := FPDFStream.Position;
     LStream.SaveToStream(FPDFStream);
     LImageSize := FPDFStream.Position - LImageSize;
@@ -153,8 +150,8 @@ begin
   s := #10 + 'endstream' + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
 
+  // Save image size
   FDirects.Add(FPDFStream.Position);
-  // Image size
   s := (FDirects.Count + cParamCount).ToString + ' 0 obj' + #10 + LImageSize.ToString + #10 + 'endobj' + #10;
   FPDFStream.Write(s[1], Length(s));
 end;
@@ -223,10 +220,7 @@ end;
 
 function TSimplePDF.AddImagePage(const AFileName: string; ADPI: integer): boolean;
 var
-  LImageSize: integer;
   LImageWidth, LImageHeight: integer;
-  LStream: TMemoryStream;
-  s: AnsiString;
   LPageWidth, LPageHeight: double;
   LBitmap: FMX.Graphics.TBitmap;
 begin

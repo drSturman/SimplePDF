@@ -74,6 +74,7 @@ begin
       Y := cPageHeightA4 - H - (10 + i * SY);
       FSimplePDF.AddImagePosition(X, Y, W, H);
       Memo1.Lines.Add('  Image added at ' + FloatToStrF(X, ffFixed, 3, 1) + ', ' + FloatToStrF(Y, ffFixed, 3, 1));
+      Application.ProcessMessages;
     end;
     FSimplePDF.SaveImagePositions;
     for i := 0 to n - 1 do
@@ -133,7 +134,10 @@ begin
   Memo1.Lines.Add('New PDF created');
   for i := 0 to OpenDialog1.Files.Count - 1 do
     if FSimplePDF.AddImagePage(OpenDialog1.Files[i], 150) then
+    begin
       Memo1.Lines.Add('Image page added from ' + ExtractFileName(OpenDialog1.Files[i]));
+      Application.ProcessMessages;
+    end;
 
   FSimplePDF.SaveEndOfPDF(chbSaveRefTable.Checked);
   Memo1.Lines.Add('PDF saved and closed');
